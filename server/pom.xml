@@ -38,6 +38,13 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>docker</id>
+			<properties>
+				<custom.packaging>jar</custom.packaging>
+				<tomcat.scope>compile</tomcat.scope>
+			</properties>
+		</profile>
+		<profile>
 			<id>prod</id>
 			<properties>
 				<custom.packaging>war</custom.packaging>

@@ -19,13 +19,25 @@ Após a instalação dos programas é possivel testar com os códigos
 
 ``` shell 
 # JAVA
-java - version
+java -version
 
 # MVN
 mvn -v
 
 # SQL Server
 sqlcmd -?
+```
+
+Para um ambiente ***Dockerizado***
+- [Docker](https://www.docker.com/get-started)
+
+Após execute os comandos.
+``` shell 
+# DOCKER
+docker -v
+
+# RAIZ DO PROJETO
+docker-compose up -d --build
 ```
 
 
@@ -69,6 +81,17 @@ mvn clean install package
 
 O comando serve para baixar todas as dependências e criar o diretório *target* com os artefatos construídos, que incluem o arquivo jar do projeto. Além disso, serão executados os testes unitários, e se algum falhar, o Maven exibirá essa informação no console.
 
+Para a construção do projeto da **Web** é necessário entrar na pasta do projeto e efetuar a instalação das dependências.
+
+```shell
+# Na Raiz do projeto
+cd web
+
+# Com seu gerenciador favorito (Yarn de preferência)
+yarn install
+#or
+npm install
+```
 
 ### Iniciando 
 
@@ -77,15 +100,25 @@ Na pasta do **Servidor** execute o comando:
 ```shell
 mvn spring-boot:run
 ```
+
 O Comando iniciará o servidor que conta com a documentação **SWAGGER** que pode ser acessada em `http://localhost:8080/api/swagger-ui.html`
+
+
+Na pasta da **Web** execute o comando:
+
+```shell
+yarn start || npm start
+```
+
+O Comando iniciará o frontend da aplicação que pode ser acessada em `http://localhost:3000`
 
 
 ## Features
 
 O projeto serve como base para implementação do seu próprio Sistema Administrativo
 * A base do Projeto é a API (Servidor)
-* Será Implementado na proxima versão o Front-End
-* Serão acrescentados outros endpoints
+* Já foi implementado na a primeira versão do Front-End
+* Serão acrescentados outros endpoints e novas funcionalidades
 
 
 ## Licença
