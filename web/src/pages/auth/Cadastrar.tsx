@@ -17,11 +17,43 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 import { FiLock, FiUser, FiUserPlus } from "react-icons/fi";
-import { Link as ReactRouterDom } from "react-router-dom";
+import { Link as ReactRouterDom, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
+import { api } from "../../services/api";
+import { login as signin } from "../../services/auth";
 
 import Card from "../../components/Card";
 
+interface FormData {
+  login: string;
+  senha: string;
+  confirmar: string;
+}
+
 const Cadastrar: React.FC = () => {
+  const history = useHistory();
+  const { register, handleSubmit } = useForm<FormData>();
+  const onSubmit = handleSubmit(({ login, senha, confirmar }) => {
+    if (senha === confirmar) {
+      api
+        .post("/usuarios", { login, senha })
+        .then((response) => {
+          api
+            .post("/usuarios/auth", { login, senha })
+            .then((response) => {
+              const { login, token } = response.data;
+              signin(login, token);
+              history.push("/");
+            })
+            .catch((err) => alert(err));
+        })
+        .catch((err) => alert(err));
+    } else {
+      alert("Senhas são diferentes!");
+    }
+  });
+
   return (
     <LightMode>
       <Center
@@ -38,6 +70,8 @@ const Cadastrar: React.FC = () => {
               px={[4, 6]}
               flex="1 1 auto"
               spacing={6}
+              as="form"
+              onSubmit={onSubmit}
             >
               <Box>
                 <Icon
@@ -65,7 +99,15 @@ const Cadastrar: React.FC = () => {
                     pointerEvents="none"
                     children={<FiUser />}
                   />
-                  <Input type="text" placeholder="Nome" pl={16} bg="brand.50" />
+                  <Input
+                    name="login"
+                    type="text"
+                    placeholder="Nome"
+                    pl={16}
+                    bg="brand.50"
+                    ref={register}
+                    autoComplete="none"
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl mb={-2} id="first-password" isRequired>
@@ -81,10 +123,13 @@ const Cadastrar: React.FC = () => {
                     children={<FiLock />}
                   />
                   <Input
+                    name="senha"
                     type="password"
                     placeholder="Senha"
                     pl={16}
                     bg="brand.50"
+                    ref={register}
+                    autoComplete="none"
                   />
                 </InputGroup>
               </FormControl>
@@ -101,10 +146,13 @@ const Cadastrar: React.FC = () => {
                     children={<FiLock />}
                   />
                   <Input
+                    name="confirmar"
                     type="password"
                     placeholder="Confirme a Senha"
                     pl={16}
                     bg="brand.50"
+                    ref={register}
+                    autoComplete="none"
                   />
                 </InputGroup>
               </FormControl>
@@ -116,13 +164,14 @@ const Cadastrar: React.FC = () => {
               </Center>
               <ButtonGroup mb={2}>
                 <Button
+                  type="submit"
                   size="lg"
                   colorScheme="blue"
                   shadow="xl"
                   w={36}
                   mx="auto"
                 >
-                  Entrar
+                  Cadastrar
                 </Button>
               </ButtonGroup>
               <Text fontSize="0.9rem">

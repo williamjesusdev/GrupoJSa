@@ -10,7 +10,6 @@ import {
   ListIcon,
   ListItem,
   Text,
-  useColorMode,
 } from "@chakra-ui/react";
 import { FiWind } from "react-icons/fi";
 import { Link as ReactRouterDom, useHistory } from "react-router-dom";
@@ -25,19 +24,15 @@ interface SidebarProps {
 
 const Sidebar = (props: SidebarProps) => {
   const history = useHistory();
-  const { colorMode } = useColorMode();
-
-  const color = { light: "brand.200", dark: "brand.100" };
-  const bgColor = { light: "brand.300", dark: "brand.600" };
-  const supportColor = { light: "brand.50", dark: "white" };
 
   return (
     <Box
       minH="100vh"
       width={props.isOpen ? "16.5rem" : "5rem"}
       position="fixed"
-      bg={bgColor[colorMode]}
-      color={color[colorMode]}
+      bg="brand.300"
+      color="brand.200"
+      boxShadow="1px 0 20px 0 #3f4d67"
       transitionDuration=".5s"
       __css={{
         _hover: {
@@ -68,7 +63,7 @@ const Sidebar = (props: SidebarProps) => {
           ml={2}
           fontSize={20}
           fontWeight="400"
-          color={supportColor[colorMode]}
+          color="brand.50"
           whiteSpace="nowrap"
           transitionDuration=".3s"
         >
@@ -77,7 +72,7 @@ const Sidebar = (props: SidebarProps) => {
         <Icon
           as={FiWind}
           fontSize={24}
-          color={supportColor[colorMode]}
+          color="brand.50"
           cursor="pointer"
           transitionDuration={props.isOpen ? ".5s" : ".2s"}
           ml="auto"
@@ -86,14 +81,14 @@ const Sidebar = (props: SidebarProps) => {
         />
       </Flex>
       <Flex flexDirection="column" height="calc(100vh - 4.5rem)">
-        <List overflow="hidden">
+        <List overflow="hidden" paddingBottom="1rem">
           {menuConfig.navitens.map((navitem, index) => (
             <React.Fragment key={index}>
               <ListItem
                 textTransform="uppercase"
                 fontSize="10px"
                 fontWeight="600"
-                color={supportColor[colorMode]}
+                color="brand.50"
                 paddingX={5}
                 pt={6}
                 pb={1}
@@ -118,7 +113,7 @@ const Sidebar = (props: SidebarProps) => {
                       : "transparent"
                   }
                   position="relative"
-                  borderLeft="2px solid transparent"
+                  borderLeft="4px solid transparent"
                   transitionProperty="color"
                   transitionDuration=".5s"
                   _hover={{ color: "#1dc4e9", borderLeftColor: "#1dc4e9" }}
@@ -130,11 +125,12 @@ const Sidebar = (props: SidebarProps) => {
                     mt="5px"
                     position="relative"
                     paddingY="7px"
-                    pl={props.isOpen ? "13px" : "23px"}
+                    pl={props.isOpen ? "11px" : "21px"}
                     pr="15px"
                     fontSize="14px"
                     whiteSpace="nowrap"
                     _hover={{ textDecoration: "none" }}
+                    _focus={{ boxShadow: 0 }}
                     visibility={props.isOpen ? "visible" : "hidden"}
                   >
                     <Box
