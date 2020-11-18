@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Center,
+  createStandaloneToast,
   FormControl,
   Heading,
   Input,
@@ -33,7 +34,9 @@ interface FormData {
 
 const Cadastrar: React.FC = () => {
   const history = useHistory();
-  const { register, handleSubmit } = useForm<FormData>();
+  const toast = createStandaloneToast();
+  const { register, handleSubmit, reset } = useForm<FormData>();
+
   const onSubmit = handleSubmit(({ login, senha, confirmar }) => {
     if (senha === confirmar) {
       api
@@ -44,13 +47,50 @@ const Cadastrar: React.FC = () => {
             .then((response) => {
               const { login, token } = response.data;
               signin(login, token);
-              history.push("/");
+              toast({
+                title: "Aê!",
+                description: "Cadastrado com Sucesso",
+                position: "top-right",
+                status: "success",
+                duration: 4000,
+                isClosable: true,
+                onCloseComplete: () => history.push("/"),
+              });
             })
-            .catch((err) => alert(err));
+            .catch((err) => {
+              let { message } = err.response.data;
+              toast({
+                title: "Ooops!",
+                description: message,
+                position: "top-right",
+                status: "warning",
+                duration: 4000,
+                isClosable: true,
+              });
+            });
         })
-        .catch((err) => alert(err));
+        .catch((err) => {
+          let { message } = err.response.data;
+          toast({
+            title: "Ooops!",
+            description: message,
+            position: "top-right",
+            status: "error",
+            duration: 4000,
+            isClosable: true,
+            onCloseComplete: () => reset({ login, senha: "", confirmar: "" }),
+          });
+        });
     } else {
-      alert("Senhas são diferentes!");
+      toast({
+        title: "Ooops!",
+        description: "As senhas não conferem",
+        position: "top-right",
+        status: "info",
+        duration: 4000,
+        isClosable: true,
+        onCloseComplete: () => reset({ login, senha: "", confirmar: "" }),
+      });
     }
   });
 
@@ -106,7 +146,7 @@ const Cadastrar: React.FC = () => {
                     pl={16}
                     bg="brand.50"
                     ref={register}
-                    autoComplete="none"
+                    autoComplete="off"
                   />
                 </InputGroup>
               </FormControl>
@@ -129,7 +169,6 @@ const Cadastrar: React.FC = () => {
                     pl={16}
                     bg="brand.50"
                     ref={register}
-                    autoComplete="none"
                   />
                 </InputGroup>
               </FormControl>
@@ -152,7 +191,6 @@ const Cadastrar: React.FC = () => {
                     pl={16}
                     bg="brand.50"
                     ref={register}
-                    autoComplete="none"
                   />
                 </InputGroup>
               </FormControl>

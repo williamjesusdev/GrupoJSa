@@ -64,7 +64,13 @@ const Recuperar: React.FC = () => {
                     pointerEvents="none"
                     children={<FiMail />}
                   />
-                  <Input type="text" placeholder="Nome" pl={16} bg="brand.50" />
+                  <Input
+                    type="text"
+                    placeholder="Nome"
+                    pl={16}
+                    bg="brand.50"
+                    autoComplete="off"
+                  />
                 </InputGroup>
               </FormControl>
               <ButtonGroup mb={2}>
@@ -75,7 +81,7 @@ const Recuperar: React.FC = () => {
                   w={36}
                   mx="auto"
                 >
-                  Entrar
+                  Resetar
                 </Button>
               </ButtonGroup>
               <Text fontSize="0.9rem" mb={-3}>

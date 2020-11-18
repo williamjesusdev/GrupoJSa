@@ -1,5 +1,5 @@
-import { useColorMode, FlexProps, Flex } from "@chakra-ui/react";
 import React from "react";
+import { useColorMode, FlexProps, Flex } from "@chakra-ui/react";
 
 const Card = (props: FlexProps) => {
   const { colorMode } = useColorMode();

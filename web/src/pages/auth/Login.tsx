@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Center,
+  createStandaloneToast,
   FormControl,
   Heading,
   Input,
@@ -32,16 +33,37 @@ interface FormData {
 
 const Login: React.FC = () => {
   const history = useHistory();
-  const { register, handleSubmit } = useForm<FormData>();
+  const toast = createStandaloneToast();
+  const { register, handleSubmit, reset } = useForm<FormData>();
+
   const onSubmit = handleSubmit(({ login, senha }) => {
     api
       .post("/usuarios/auth", { login, senha })
       .then((response) => {
-        const { login, token } = response.data;
+        let { login, token } = response.data;
         signin(login, token);
-        history.push("/");
+        toast({
+          title: "Aê!",
+          description: "Logado com Sucesso",
+          position: "top-right",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+          onCloseComplete: () => history.push("/"),
+        });
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        let { message } = err.response.data;
+        toast({
+          title: "Ooops!",
+          description: message,
+          position: "top-right",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+          onCloseComplete: () => reset({ login, senha: "" }),
+        });
+      });
   });
 
   return (
@@ -82,7 +104,7 @@ const Login: React.FC = () => {
                   <InputLeftElement
                     p={0}
                     h="2.9rem"
-                    top="0.1rem"
+                    top="0.05rem"
                     left="0.1rem"
                     borderLeftRadius="0.375rem"
                     bg="brand.100"
@@ -96,7 +118,7 @@ const Login: React.FC = () => {
                     pl={16}
                     bg="brand.50"
                     ref={register}
-                    autoComplete="none"
+                    autoComplete="off"
                   />
                 </InputGroup>
               </FormControl>
@@ -105,7 +127,7 @@ const Login: React.FC = () => {
                   <InputLeftElement
                     p={0}
                     h="2.9rem"
-                    top="0.1rem"
+                    top="0.05rem"
                     left="0.1rem"
                     bg="brand.100"
                     borderLeftRadius="0.375rem"
